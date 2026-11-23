@@ -6,6 +6,7 @@ import { Resultado } from '../../components/Resultado';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { usePersistentReducer } from '../../hooks/usePersistentReducer';
 import { asset } from '../../lib/assets';
+import { Planta, type Animo, type Etapa } from '../../ilustraciones/Planta';
 import { cx } from '../../lib/cx';
 import {
   DIAS,
@@ -17,6 +18,7 @@ import {
   cultivaReducer,
   isCultivaInProgress,
   necesidad,
+  problema,
   type CultivaState,
   type Medidor,
 } from './cultivaLogic';
@@ -70,19 +72,29 @@ const INFO: Record<
   },
 };
 
-/** Tamaño de la mascota según la etapa (crece con un rebote al avanzar). */
-const ESCALA = [0.7, 0.8, 0.9, 1];
 const ESPERA_RESULTADO = 1600;
+
+const ANIMO: Record<Medidor, { poco: Animo; mucho: Animo }> = {
+  water: { poco: 'sed', mucho: 'ahogada' },
+  sun: { poco: 'sinSol', mucho: 'calor' },
+  love: { poco: 'triste', mucho: 'mimada' },
+};
+
+/** Cómo se ve la planta: celebra al crecer o florecer; si no, refleja lo que más le molesta. */
+function animo(s: CultivaState): Animo {
+  if (s.status === 'won' || s.grew) return 'celebra';
+  const p = problema(s);
+  return p ? ANIMO[p.medidor][p.tipo] : 'feliz';
+}
 
 function mensaje(s: CultivaState) {
   // TODO: revisar — mensajes del globo además de los del README.
   if (s.status === 'won') return '¡Florecí! ¡Gracias por cuidarme!';
   if (s.status === 'done') return '¡Gracias por cuidarme esta semana!';
   if (s.grew) return `¡Mira, crecí! Ya soy ${ETAPAS[s.stage].toLowerCase()}.`;
-  const demasiado = MEDIDORES.find((m) => s[m] > RANGO.max);
-  if (demasiado) return INFO[demasiado].mucho;
-  const n = necesidad(s);
-  return s[n] < RANGO.min ? INFO[n].pide : INFO[n].suave;
+  const p = problema(s);
+  if (p) return p.tipo === 'mucho' ? INFO[p.medidor].mucho : INFO[p.medidor].pide;
+  return INFO[necesidad(s)].suave;
 }
 
 function estado(v: number): { texto: string; alerta: boolean } {
@@ -182,12 +194,13 @@ export default function Cultiva() {
             <PauseIcon />
           </button>
 
-          <img
-            src={asset('mascot.png')}
-            alt={`Tu plantita, etapa ${ETAPAS[state.stage].toLowerCase()}`}
-            style={{ transform: `scale(${ESCALA[state.stage]})` }}
-            className="absolute left-[14px] top-[70px] w-[320px] origin-bottom transition-transform duration-700 ease-[cubic-bezier(.34,1.56,.64,1)] md:left-1/2 md:top-[110px] md:-ml-[200px] md:w-[400px] lg:left-u46 lg:top-u118 lg:ml-0 lg:w-u470"
-          />
+          {/* La planta crece con un rebote al cambiar de etapa (key = etapa). */}
+          <div
+            key={state.stage}
+            className="absolute bottom-[40px] left-[6px] w-[250px] origin-bottom motion-safe:animate-crece md:bottom-[46px] md:left-1/2 md:w-[330px] md:-translate-x-[60%] lg:bottom-u62 lg:left-u40 lg:w-u420 lg:translate-x-0"
+          >
+            <Planta etapa={state.stage as Etapa} animo={animo(state)} className="block w-full" />
+          </div>
 
           <p
             aria-live="polite"

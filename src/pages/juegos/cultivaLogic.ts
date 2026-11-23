@@ -56,6 +56,17 @@ export function cultivaReducer(state: CultivaState, action: CultivaAction): Cult
   }
 }
 
+/**
+ * El medidor que más le molesta a la planta ahora: primero lo que sobra (agua, sol o cariño de más)
+ * y luego lo que falta. `null` si todo está en rango. Lo usan el globo de diálogo y el dibujo.
+ */
+export function problema(state: CultivaState): { medidor: Medidor; tipo: 'poco' | 'mucho' } | null {
+  const demasiado = MEDIDORES.filter((m) => state[m] > RANGO.max).sort((a, b) => state[b] - state[a])[0];
+  if (demasiado) return { medidor: demasiado, tipo: 'mucho' };
+  const n = necesidad(state);
+  return state[n] < RANGO.min ? { medidor: n, tipo: 'poco' } : null;
+}
+
 /** La necesidad más baja (la acción recomendada). */
 export function necesidad(state: CultivaState): Medidor {
   return MEDIDORES.reduce((a, b) => (state[b] < state[a] ? b : a));

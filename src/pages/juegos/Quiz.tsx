@@ -4,7 +4,7 @@ import { GameBar } from '../../components/GameBar';
 import { Resultado } from '../../components/Resultado';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { usePersistentReducer } from '../../hooks/usePersistentReducer';
-import { asset } from '../../lib/assets';
+import { QuizIlustracion } from '../../ilustraciones/quiz';
 import { cx } from '../../lib/cx';
 import { createQuiz, getPregunta, isQuizInProgress, quizReducer } from './quizLogic';
 
@@ -94,10 +94,10 @@ export default function Quiz() {
       <GameBar titulo="QUIZ ECOLÓGICO" sideWidth="lg:w-u280" aside={progreso} />
 
       <div className="px-5 md:mx-auto md:max-w-[760px] md:px-10 lg:mt-u18 lg:flex lg:max-w-none lg:items-start lg:px-u96">
-        <img
-          src={asset('game-quiz.png')}
-          alt=""
-          className="mx-auto mt-[10px] block w-[210px] md:w-[260px] lg:ml-u4 lg:mr-u40 lg:mt-u98 lg:w-u400 lg:shrink-0"
+        <QuizIlustracion
+          key={actual.id}
+          id={actual.id}
+          className="mx-auto mt-[10px] block w-[240px] motion-safe:animate-aparece md:w-[300px] lg:ml-u4 lg:mr-u40 lg:mt-u70 lg:w-u400 lg:shrink-0"
         />
 
         <section

@@ -11,6 +11,7 @@ import Residuos from './pages/juegos/Residuos';
 import Quiz from './pages/juegos/Quiz';
 import Contacto from './pages/Contacto';
 import NotFound from './pages/NotFound';
+import Ilustraciones from './pages/Ilustraciones';
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="juegos/residuos" element={<Residuos />} />
         <Route path="juegos/quiz" element={<Quiz />} />
         <Route path="contacto" element={<Contacto />} />
+        {import.meta.env.DEV && <Route path="dev/ilustraciones" element={<Ilustraciones />} />}
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

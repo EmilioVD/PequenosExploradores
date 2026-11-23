@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { GameBar, StatusPill } from '../../components/GameBar';
 import { Placeholder } from '../../components/Placeholder';
+import { ResiduoIlustracion, residuosConIlustracion } from '../../ilustraciones/residuos';
 import { Resultado } from '../../components/Resultado';
 import { botes, getBote, getResiduo, type BoteId } from '../../data/residuos';
 import { usePageTitle } from '../../hooks/usePageTitle';
@@ -166,7 +167,11 @@ export default function Residuos() {
               fb && !fb.ok && 'animate-shake',
             )}
           >
-            <Placeholder label={item.id} className="h-24 w-full rounded-[10px] lg:h-u116 lg:rounded-xl" />
+            {residuosConIlustracion.includes(item.id) ? (
+              <ResiduoIlustracion id={item.id} className="pointer-events-none h-24 w-full lg:h-u116" />
+            ) : (
+              <Placeholder label={item.id} className="h-24 w-full rounded-[10px] lg:h-u116 lg:rounded-xl" />
+            )}
             <span className="mt-2 block w-full text-center font-display text-[17px] leading-[19px] lg:mt-u10 lg:text-u20 lg:leading-u22">
               {item.nombre}
             </span>
