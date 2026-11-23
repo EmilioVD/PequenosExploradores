@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { BackLink } from '../components/BackLink';
 import { Button } from '../components/Button';
 import { Card, type CardVariant } from '../components/Card';
-import { Placeholder } from '../components/Placeholder';
+import { FotoPlanta } from '../components/FotoPlanta';
 import { Tag } from '../components/Tag';
 import { getPlanta } from '../data/plantas';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -32,7 +32,7 @@ export default function Planta() {
           variant="amarillo"
           className="mt-3 h-[260px] rounded-[20px] p-[14px] md:h-[400px] lg:mt-0 lg:h-u500 lg:w-u540 lg:shrink-0 lg:rounded-card-lg lg:p-5"
         >
-          <Placeholder label={`${planta.slug} (estilo de la mascota)`} className="h-full md:rounded-2xl" />
+          <FotoPlanta slug={planta.slug} nombre={planta.nombre} credito className="h-full rounded-xl md:rounded-2xl" />
         </Card>
 
         <div className="flex flex-col lg:w-u644">

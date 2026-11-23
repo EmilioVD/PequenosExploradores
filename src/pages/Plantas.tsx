@@ -4,7 +4,7 @@ import { ArrowRight } from '../components/BackLink';
 import { cardClasses } from '../components/Card';
 import { Chip } from '../components/Chip';
 import { Cloud, Rays } from '../components/Decor';
-import { Placeholder } from '../components/Placeholder';
+import { FotoPlanta } from '../components/FotoPlanta';
 import { filtros, plantas, type Categoria } from '../data/plantas';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { asset } from '../lib/assets';
@@ -61,7 +61,7 @@ export default function Plantas() {
                 'relative flex h-full flex-col px-[10px] pb-3 pt-[10px] md:p-[13px] lg:h-u300',
               )}
             >
-              <Placeholder label={p.slug} className="h-[110px] rounded-[10px] md:h-[170px] md:rounded-xl" />
+              <FotoPlanta slug={p.slug} nombre={p.nombre} className="h-[110px] rounded-[10px] md:h-[170px] md:rounded-xl" />
               <span className="mt-[10px] font-display text-[22px] leading-6 md:mt-[14px] md:text-[30px] md:leading-8">
                 {p.nombre}
               </span>
